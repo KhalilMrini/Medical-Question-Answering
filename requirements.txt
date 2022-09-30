@@ -1,0 +1,4 @@
+transformers
+haystack
+farm-haystack
+'farm-haystack[faiss]'

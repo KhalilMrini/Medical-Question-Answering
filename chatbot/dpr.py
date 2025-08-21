@@ -7,13 +7,15 @@ import os
 
 class DPR(object):
 
-    def __init__(self, database, questions_as_str, dataset='meqsum') -> None:
+    def __init__(self, database, questions_as_str, dataset='./data/meqsum') -> None:
         self.dataset = dataset
         self.database = database
         self.questions_as_str = questions_as_str
         self.faiss_name = dataset + "_faiss_document_store"
         
-        existing_doc_store = self.faiss_name + ".db" in os.listdir('.')
+        #existing_doc_store = self.faiss_name + ".db" in os.listdir('.')
+        existing_doc_store = os.path.exists(self.faiss_name + ".db")
+
         if existing_doc_store:
             document_store = FAISSDocumentStore.load(
                 index_path=self.faiss_name + ".index", 
@@ -62,7 +64,8 @@ class DPR(object):
         ## RETRIEVAL OF ANSWER
 
         ans_suffix = "_" + str(matched_idx)
-        existing_doc_store_ans = self.faiss_name + ans_suffix + ".db" in os.listdir('.')
+        #existing_doc_store_ans = self.faiss_name + ans_suffix + ".db" in os.listdir('.')
+        existing_doc_store_ans = os.path.exists(self.faiss_name + ans_suffix + ".db")
         if existing_doc_store_ans:
             document_store_ans = FAISSDocumentStore.load(
                 index_path=self.faiss_name + ans_suffix + ".index", 

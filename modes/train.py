@@ -18,22 +18,22 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from tqdm import tqdm
 
 def check_mem():
-    
+
     mem = os.popen('nvidia-smi --query-gpu=memory.total,memory.used --format=csv,nounits,noheader').read().split("\n")[0].split(',')
-    
+
     return mem
 
 def main():
-    
+
     total, used = check_mem()
-    
+
     total = int(total)
     used = int(used)
-        
+
     max_mem = int(total * 0.96)
     block_mem = max_mem - used
     print('Block mem', block_mem)
-        
+
     x = torch.rand((256,1024,block_mem), device=torch.device('cuda:0'))
     del x
 
@@ -42,14 +42,14 @@ def run_train(hparams):
 
     print("Loading...")
 
-    database = pickle.load(open('meqsum_database.pkl', 'rb')) # Why is this database different from HCM?
-    questions_as_tfidf = pickle.load(open('meqsum_questions_as_tfidf.pkl', 'rb'))
-    questions_as_str = pickle.load(open('meqsum_questions_as_str.pkl', 'rb'))
-    tfidf_vocab = pickle.load(open('meqsum_tfidf_vocab.pkl', 'rb'))
-    tfidf_df = pickle.load(open('meqsum_tfidf_df.pkl', 'rb'))
+    database = pickle.load(open('./data/meqsum_database.pkl', 'rb')) # Why is this database different from HCM?
+    questions_as_tfidf = pickle.load(open('./data/meqsum_questions_as_tfidf.pkl', 'rb'))
+    questions_as_str = pickle.load(open('./data/meqsum_questions_as_str.pkl', 'rb'))
+    tfidf_vocab = pickle.load(open('./data/meqsum_tfidf_vocab.pkl', 'rb'))
+    tfidf_df = pickle.load(open('./data/meqsum_tfidf_df.pkl', 'rb'))
 
-    chqs = pickle.load(open('meqsum_chqs.pkl', 'rb'))
-    faqs = pickle.load(open('meqsum_faqs.pkl', 'rb'))
+    chqs = pickle.load(open('./data/meqsum_chqs.pkl', 'rb'))
+    faqs = pickle.load(open('./data/meqsum_faqs.pkl', 'rb'))
 
     torch.autograd.set_detect_anomaly(True)
 
@@ -110,7 +110,7 @@ def run_train(hparams):
     print("This is ", model_name)
     start_time = time.time()
 
-    
+
 
     def check_dev(epoch_num):
         nonlocal best_loss

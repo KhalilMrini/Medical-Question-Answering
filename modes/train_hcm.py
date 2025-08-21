@@ -18,36 +18,36 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from tqdm import tqdm
 
 def check_mem():
-    
+
     mem = os.popen('nvidia-smi --query-gpu=memory.total,memory.used --format=csv,nounits,noheader').read().split("\n")[0].split(',')
-    
+
     return mem
 
 def main():
-    
+
     total, used = check_mem()
-    
+
     total = int(total)
     used = int(used)
-        
+
     max_mem = int(total * 0.96)
     block_mem = max_mem - used
     print('Block mem', block_mem)
-        
+
     x = torch.rand((256,1024,block_mem), device=torch.device('cuda:0'))
     del x
 
 def run_train_hcm(hparams):
     #_, labels, _, _ = get_data()
 
-    database = pickle.load(open('hcm_database.pkl', 'rb'))
-    questions_as_tfidf = pickle.load(open('hcm_questions_as_tfidf.pkl', 'rb'))
-    questions_as_str = pickle.load(open('hcm_questions_as_str.pkl', 'rb'))
-    tfidf_vocab = pickle.load(open('hcm_tfidf_vocab.pkl', 'rb'))
-    tfidf_df = pickle.load(open('hcm_tfidf_df.pkl', 'rb'))
+    database = pickle.load(open('./data/hcm_database.pkl', 'rb'))
+    questions_as_tfidf = pickle.load(open('./data/hcm_questions_as_tfidf.pkl', 'rb'))
+    questions_as_str = pickle.load(open('./data/hcm_questions_as_str.pkl', 'rb'))
+    tfidf_vocab = pickle.load(open('./data/hcm_tfidf_vocab.pkl', 'rb'))
+    tfidf_df = pickle.load(open('./data/hcm_tfidf_df.pkl', 'rb'))
 
-    chqs = pickle.load(open('hcm_chqs.pkl', 'rb'))
-    faqs = pickle.load(open('hcm_faqs.pkl', 'rb'))
+    chqs = pickle.load(open('./data/hcm_chqs.pkl', 'rb'))
+    faqs = pickle.load(open('./data/hcm_faqs.pkl', 'rb'))
 
     torch.autograd.set_detect_anomaly(True)
 
@@ -108,7 +108,7 @@ def run_train_hcm(hparams):
     print("This is ", model_name)
     start_time = time.time()
 
-    
+
 
     def check_dev(epoch_num):
         nonlocal best_loss

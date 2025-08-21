@@ -1,4 +1,15 @@
+accelerate
+peft
+huggingface_hub
 transformers
+transformers[torch]
+torch
+dpr
+editdistance
 haystack
+rouge_score
 farm-haystack
-'farm-haystack[faiss]'
+farm-haystack[faiss]
+farm-haystack[inference]
+flask
+numpy<2
